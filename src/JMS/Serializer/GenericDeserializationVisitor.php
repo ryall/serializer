@@ -178,10 +178,17 @@ abstract class GenericDeserializationVisitor extends AbstractVisitor
             throw new RuntimeException(sprintf('You must define a type for %s::$%s.', $metadata->reflection->class, $metadata->name));
         }
 
+        if ($context instanceof DeserializationContext) {
+            $context->setPropertyName($name);
+        }
+
         $v = $data[$name] !== null ? $this->navigator->accept($data[$name], $metadata->type, $context) : null;
 
-        $this->accessor->setValue($this->currentObject, $v, $metadata);
+        if ($context instanceof DeserializationContext) {
+            $context->clearPropertyName();
+        }
 
+        $this->accessor->setValue($this->currentObject, $v, $metadata);
     }
 
     public function endVisitingObject(ClassMetadata $metadata, $data, array $type, Context $context)

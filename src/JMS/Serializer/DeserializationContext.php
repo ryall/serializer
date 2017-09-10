@@ -20,6 +20,7 @@ namespace JMS\Serializer;
 
 class DeserializationContext extends Context
 {
+    private $propertyName = null;
     private $depth = 0;
 
     public static function create()
@@ -30,6 +31,21 @@ class DeserializationContext extends Context
     public function getDirection()
     {
         return GraphNavigator::DIRECTION_DESERIALIZATION;
+    }
+
+    public function getPropertyName()
+    {
+        return $this->propertyName;
+    }
+
+    public function setPropertyName($propertyName)
+    {
+        $this->propertyName = $propertyName;
+    }
+
+    public function clearPropertyName()
+    {
+        $this->propertyName = null;
     }
 
     public function getDepth()
